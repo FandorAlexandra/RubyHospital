@@ -1,4 +1,5 @@
 require_relative "patients"
+require 'securerandom'
 
 class Employee
 	attr_reader :name, :hospital, :id
@@ -32,7 +33,7 @@ class Admin < Employee
 			filter_patients = filter_patients.select! {|p| p.hospital == options[:hospital]
 		end
 	end
-			
+
 	#adds patient to your list
 	def add_patient(patient)
 		@patients.push(patient)

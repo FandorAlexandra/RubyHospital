@@ -1,12 +1,14 @@
 require_relative 'patients'
 require_relative 'employees'
+require 'securerandom'
 
 class Hospital
-	attr_reader :name, :location
+	attr_reader :name, :location, :id
 
 	def initialize(name, location)
 		@name = name
 		@location = location
+		@id = SecureRandom.uuid
 		@patients = Array.new
 		@employees = Hash.new
 		@employees = {"doctors": [], "janitors": [], "receptionists": [], "general: " []}
@@ -21,8 +23,7 @@ class Hospital
 	end
 
 	def add_employee(employee)
-		type = employee.class.name
-		case type
+		case employee.class.name
 			when "Doctor"
 				@employees["doctors"].push(employee)
 			when "Janitor"
