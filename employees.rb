@@ -2,8 +2,7 @@ require_relative "patients"
 require 'securerandom'
 
 class Employee
-	attr_reader :name, :hospital, :id
-	attr_writer :salary
+	attr_reader :name, :hospital, :id, :salary
 
 	def initialize(name, hospital, salary)
 		@name = name
@@ -12,6 +11,13 @@ class Employee
 		@id = SecureRandom.uuid
 	end
 
+	def promote
+		@salary *= 1.2
+	end
+
+	def demote
+		@salary *= 0.8
+	end
 end
 
 #Admins can access patients & records
@@ -50,16 +56,6 @@ class Admin < Employee
 		if patient
 			records = patient.records
 		end
-
-		# if patient
-		# 	puts "RECORDS: "
-		# 	patient.records.each do |record|
-		# 		puts "#{record.text}\n"
-		# 	end
-		# 	puts "END OF RECORDS"
-		# else
-		# 	puts "No patient found with id #{patient_id}."
-		# end
 	end
 end
 
@@ -76,6 +72,14 @@ class Doctor < Admin
 end
 
 
+#Receptionists are admins who can also add patients
+class Receptionist < Admin
+	def create_patient(name)
+		new_patient = Patient.new(name)
+		@hospital.add(new_patient)
+	end
+end
+
 class Janitor < Employee
 	def initialize(name, hospital, salary)
 		super
@@ -84,14 +88,5 @@ class Janitor < Employee
 
 	def add_daily_task(task)
 		@daily_tasks.push(task)
-	end
-
-end
-
-#Receptionists are admins who can also add patients
-class Receptionist < Admin
-	def create_patient(name)
-		new_patient = Patient.new(name)
-		@hospital.add(new_patient)
 	end
 end

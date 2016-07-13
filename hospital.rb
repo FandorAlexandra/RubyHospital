@@ -10,12 +10,16 @@ class Hospital
 		@location = location
 		@id = SecureRandom.uuid
 		@patients = Array.new
-		@employees = Hash.new
-		@employees = {"doctors": [], "janitors": [], "receptionists": [], "general": []}
+		@employees = Hash.new {|emp, type| emp[type] = Array.new}
+		#@employees = {"doctors": Array.new, "janitors": Array.new, "receptionists": Array.new, "general": Array.new}
 	end
 
 	def num_employees
-		num = @employees.values.length
+		num = 0
+		@employees.each do |type, list|
+			num += list.length
+		end
+		return num
 	end
 
 	def num_patients
@@ -23,7 +27,7 @@ class Hospital
 	end
 
 	def num_doctors
-		num = @employees["doctors"].length
+		num = @employees["doctors"] ? @employees["doctors"].length : 0
 	end
 
 	def add_employee(employee)
@@ -32,7 +36,7 @@ class Hospital
 				@employees["doctors"].push(employee)
 			when "Janitor"
 				 @employees['janitors'].push(employee)
-			when "Receptionists"
+			when "Receptionist"
 				@employees['receptionists'].push(employee)
 			else
 				@employees['general'].push(employee)
