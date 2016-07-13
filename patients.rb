@@ -1,4 +1,5 @@
 require 'securerandom'
+require 'date'
 
 class Patient
 	attr_reader :name, :records, :id
@@ -31,7 +32,7 @@ class Record
 
 	def initialize(text, author_id)
 		@text = text
-		@author = author
+		@author = author_id
 		@id = SecureRandom.uuid
 		@date = DateTime.now
 	end

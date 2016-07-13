@@ -26,17 +26,12 @@ class HumanResources
 		end
 	end
 
-	def remove_employee(employee_id, hospital_id)
-		hospital = @hospitals.find {|h| h.id == hospital_id}
-		if hospital.get_employees({"id": employee_id})
-			employee = @hospitals.find {|h| h.id == hospital_id}
-
 	def find_hospital(options = {})
 		if options[:id]
 			return @hospitals.find {|p| p.id == patient_id}
 		end
 		if options[:name]
-			filter_hospitals = filter_hospitals.select! {|h| h.name == options[:name]
+			filter_hospitals = filter_hospitals.select! {|h| h.name == options[:name]}
 		end
 	end
 

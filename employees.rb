@@ -27,10 +27,10 @@ class Admin < Employee
 		end
 		filter_patients = @patients
 		if options[:name]
-			filter_patients = filter_patients.select! {|p| p.name == options[:name]
+			filter_patients = filter_patients.select! {|p| p.name == options[:name]}
 		end
 		if  options[:hospital]
-			filter_patients = filter_patients.select! {|p| p.hospital == options[:hospital]
+			filter_patients = filter_patients.select! {|p| p.hospital == options[:hospital]}
 		end
 	end
 

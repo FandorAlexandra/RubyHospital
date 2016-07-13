@@ -11,7 +11,7 @@ class Hospital
 		@id = SecureRandom.uuid
 		@patients = Array.new
 		@employees = Hash.new
-		@employees = {"doctors": [], "janitors": [], "receptionists": [], "general: " []}
+		@employees = {"doctors": [], "janitors": [], "receptionists": [], "general": []}
 	end
 
 	def num_employees
