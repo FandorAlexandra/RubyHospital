@@ -15,11 +15,15 @@ class Hospital
 	end
 
 	def num_employees
-		num = @employees['doctors'].length + @employees['janitors'].length + @employees['receptionists'].length
+		num = @employees.values.length
 	end
 
 	def num_patients
 		num = @patients.length
+	end
+
+	def num_doctors
+		num = @employees["doctors"].length
 	end
 
 	def add_employee(employee)
@@ -32,6 +36,16 @@ class Hospital
 				@employees['receptionists'].push(employee)
 			else
 				@employees['general'].push(employee)
+		end
+	end
+
+	def get_employees(options = {})
+		if options["id"]
+			return @employees.values.find {|employee| employee.id == options["id"]}
+		elsif options["type"]
+			employees = options["type"] == "all" ? @employees.values : @employees["type"]
+		elsif options["name"]
+			employees = @employees.values.select {|employee| employee.name == options["name"]}
 		end
 	end
 

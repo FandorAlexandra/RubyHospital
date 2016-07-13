@@ -69,10 +69,8 @@ class Doctor < Admin
 		patient = @patients.find {|p| p.id == patient_id}
 		if patient
 			puts "Enter Record:"
-			record = Record.new(gets.chomp)
+			record = Record.new(gets.chomp, @id)
 			patient.add_record(record)
-		else
-			puts "No patient found with id #{patient_id}."
 		end
 	end
 end

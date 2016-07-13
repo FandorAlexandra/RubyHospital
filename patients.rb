@@ -29,8 +29,9 @@ end
 class Record
 	attr_reader :id, :text, :date
 
-	def initialize(text)
+	def initialize(text, author_id)
 		@text = text
+		@author = author
 		@id = SecureRandom.uuid
 		@date = DateTime.now
 	end
