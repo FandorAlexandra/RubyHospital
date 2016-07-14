@@ -1,6 +1,5 @@
 require_relative 'employees'
 require_relative 'hospital'
-require_relative 'patients'
 
 class HumanResources
 	attr_reader :hospitals
@@ -23,12 +22,13 @@ class HumanResources
 					employee = Employee.new(name, hospital, salary)
 			end
 			hospital.add_employee(employee)
+			return employee
 		end
 	end
 
 	def find_hospital(options = {})
 		if options[:id]
-			return @hospitals.find {|p| p.id == patient_id}
+			return @hospitals.find {|p| p.id == options[:id]}
 		end
 		if options[:name]
 			filter_hospitals = filter_hospitals.select! {|h| h.name == options[:name]}

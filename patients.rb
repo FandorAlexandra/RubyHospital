@@ -10,8 +10,10 @@ class Patient
 		@id = SecureRandom.uuid
 	end
 
-	def add_record(record)
+	def create_record(text, author_id)
+		record = Record.new(text, author_id)
 		@records.push(record)
+		return record
 	end
 
 	def delete_record(record_id)
@@ -28,7 +30,7 @@ class Patient
 end
 
 class Record
-	attr_reader :id, :text, :date
+	attr_reader :id, :text, :date, :author
 
 	def initialize(text, author_id)
 		@text = text

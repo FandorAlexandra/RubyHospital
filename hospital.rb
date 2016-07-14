@@ -3,7 +3,7 @@ require_relative 'employees'
 require 'securerandom'
 
 class Hospital
-	attr_reader :name, :location, :id
+	attr_reader :name, :location, :id, :patients
 
 	def initialize(name, location)
 		@name = name
@@ -11,7 +11,6 @@ class Hospital
 		@id = SecureRandom.uuid
 		@patients = Array.new
 		@employees = Hash.new {|emp, type| emp[type] = Array.new}
-		#@employees = {"doctors": Array.new, "janitors": Array.new, "receptionists": Array.new, "general": Array.new}
 	end
 
 	def num_employees
@@ -27,29 +26,33 @@ class Hospital
 	end
 
 	def num_doctors
-		num = @employees["doctors"] ? @employees["doctors"].length : 0
+		num = @employees["doctor"] ? @employees["doctor"].length : 0
 	end
 
 	def add_employee(employee)
 		case employee.class.name
 			when "Doctor"
-				@employees["doctors"].push(employee)
+				@employees["doctor"].push(employee)
 			when "Janitor"
-				 @employees['janitors'].push(employee)
+				 @employees["janitor"].push(employee)
 			when "Receptionist"
-				@employees['receptionists'].push(employee)
+				@employees["receptionist"].push(employee)
 			else
-				@employees['general'].push(employee)
+				@employees["general"].push(employee)
 		end
 	end
 
 	def get_employees(options = {})
-		if options["id"]
-			return @employees.values.find {|employee| employee.id == options["id"]}
-		elsif options["type"]
-			employees = options["type"] == "all" ? @employees.values : @employees["type"]
-		elsif options["name"]
-			employees = @employees.values.select {|employee| employee.name == options["name"]}
+		if options[:id]
+			return @employees.values.find {|employee| employee.id == options[:id]}
+		elsif options[:type]
+			employees = options[:type] == "all" ? @employees.values : @employees[options[:type]]
+		elsif options[:name]
+			employees = Array.new
+			@employees.values.select do |employee_type|
+				employees += employee_type.select {|employee| employee.name == options[:name]}
+			end
+			return employees
 		end
 	end
 

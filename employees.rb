@@ -11,12 +11,12 @@ class Employee
 		@id = SecureRandom.uuid
 	end
 
-	def promote
-		@salary *= 1.2
+	def promote(percent_increase)
+		@salary *= (1 + percent_increase)
 	end
 
-	def demote
-		@salary *= 0.8
+	def demote(percent_decrease)
+		@salary *= (1 - percent_decrease)
 	end
 end
 
@@ -29,15 +29,16 @@ class Admin < Employee
 
 	def find_patients(options = {})
 		if options[:id]
-			return @patients.find {|p| p.id == patient_id}
+			return @patients.find {|p| p.id == options[:id]}
 		end
-		filter_patients = @patients
+		filter_patients = Array.new(@patients)
 		if options[:name]
-			filter_patients = filter_patients.select! {|p| p.name == options[:name]}
+			filter_patients.select! {|p| p.name == options[:name]}
 		end
 		if  options[:hospital]
-			filter_patients = filter_patients.select! {|p| p.hospital == options[:hospital]}
+			filter_patients.select! {|p| p.hospital == options[:hospital]}
 		end
+		return filter_patients
 	end
 
 	#adds patient to your list
@@ -54,19 +55,17 @@ class Admin < Employee
 	def get_records(patient_id)
 		patient = @patients.find {|p| p.id == patient_id}
 		if patient
-			records = patient.records
+			return patient.records
 		end
 	end
 end
 
-#Doctors are admins who can also add records
+#Doctors are admins who can also add patient records
 class Doctor < Admin
-	def add_record(patient_id)
+	def add_record(patient_id, text)
 		patient = @patients.find {|p| p.id == patient_id}
 		if patient
-			puts "Enter Record:"
-			record = Record.new(gets.chomp, @id)
-			patient.add_record(record)
+			patient.create_record(text, @id)
 		end
 	end
 end
@@ -76,7 +75,8 @@ end
 class Receptionist < Admin
 	def create_patient(name)
 		new_patient = Patient.new(name)
-		@hospital.add(new_patient)
+		@hospital.add_patient(new_patient)
+		return new_patient
 	end
 end
 
